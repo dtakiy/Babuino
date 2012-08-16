@@ -6,7 +6,6 @@
 
 package maquinavirtual;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.Timer;
 import javax.swing.Icon;
@@ -41,16 +41,18 @@ public class MaquinaVirtualView extends FrameView {
     public DefaultTableModel modelSaida = new DefaultTableModel();
     public DefaultTableModel modelMemoria = new DefaultTableModel();
     private int op;
-    public  int linha = 0; // linha do codigo
+    public  int linha; // linha do codigo
     public BufferedReader in = null; //usado para abrir arquivo .obj
-  
-   
+    public int s = 0; // stack pointer
+    public int [] M = new int[20000];
+    
 
     public MaquinaVirtualView(SingleFrameApplication app) {
         super(app);
        
         initComponents();
-             normal.setModel(new javax.swing.table.DefaultTableModel(  // setando a JTable
+        
+        normal.setModel(new javax.swing.table.DefaultTableModel(  // setando a JTable
             new Object [][] {
 
             },
@@ -137,8 +139,6 @@ public class MaquinaVirtualView extends FrameView {
         jPanel1 = new javax.swing.JPanel();
         jLabelPilha = new javax.swing.JLabel();
         jLabelNormal = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        normal = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         pilha = new javax.swing.JTable();
         menuBar = new javax.swing.JMenuBar();
@@ -148,13 +148,15 @@ public class MaquinaVirtualView extends FrameView {
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
-        javax.swing.JSeparator statusPanelSeparator = new javax.swing.JSeparator();
+        statusPanelSeparator = new javax.swing.JSeparator();
         statusMessageLabel = new javax.swing.JLabel();
         statusAnimationLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
         jPanel2 = new javax.swing.JPanel();
         jLabelEntrada = new javax.swing.JLabel();
         jTextFieldEntrada = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        normal = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         normals = new javax.swing.JRadioButton();
         passoapasso = new javax.swing.JRadioButton();
@@ -188,23 +190,6 @@ public class MaquinaVirtualView extends FrameView {
 
         jLabelNormal.setText(resourceMap.getString("jLabelNormal.text")); // NOI18N
         jLabelNormal.setName("jLabelNormal"); // NOI18N
-
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        normal.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null}
-            },
-            new String [] {
-                "Linha", "Atributo 1", "Atributo 2", "Comentario"
-            }
-        ));
-        normal.setName("normal"); // NOI18N
-        jScrollPane1.setViewportView(normal);
-        normal.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("normal.columnModel.title0")); // NOI18N
-        normal.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("normal.columnModel.title1")); // NOI18N
-        normal.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("normal.columnModel.title2")); // NOI18N
-        normal.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("normal.columnModel.title3")); // NOI18N
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
@@ -328,17 +313,15 @@ public class MaquinaVirtualView extends FrameView {
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabelNormal)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(40, 40, 40)
+                .add(jLabelNormal)
+                .add(448, 448, 448)
                 .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(mainPanelLayout.createSequentialGroup()
                         .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(447, 447, 447)
                         .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(jLabelPilha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(587, Short.MAX_VALUE))
+                .addContainerGap(1055, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -353,13 +336,10 @@ public class MaquinaVirtualView extends FrameView {
                             .add(jLabelNormal)
                             .add(jLabelPilha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .add(18, 18, 18)
-                        .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 563, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 572, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                        .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 563, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(9, 9, 9))
         );
 
-        menuBar.setAutoscrolls(true);
         menuBar.setName("menuBar"); // NOI18N
 
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
@@ -414,23 +394,46 @@ public class MaquinaVirtualView extends FrameView {
         jTextFieldEntrada.setText(resourceMap.getString("jTextFieldEntrada.text")); // NOI18N
         jTextFieldEntrada.setName("jTextFieldEntrada"); // NOI18N
 
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        normal.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null}
+            },
+            new String [] {
+                "Linha", "Atributo 1", "Atributo 2", "Comentario"
+            }
+        ));
+        normal.setName("normal"); // NOI18N
+        jScrollPane1.setViewportView(normal);
+        normal.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("normal.columnModel.title0")); // NOI18N
+        normal.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("normal.columnModel.title1")); // NOI18N
+        normal.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("normal.columnModel.title2")); // NOI18N
+        normal.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("normal.columnModel.title3")); // NOI18N
+
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel2Layout.createSequentialGroup()
+                .add(12, 12, 12)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabelEntrada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 238, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jTextFieldEntrada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 300, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .add(600, 600, 600)
                 .add(jLabelEntrada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(jTextFieldEntrada, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 572, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel3.setName("jPanel3"); // NOI18N
@@ -443,7 +446,7 @@ public class MaquinaVirtualView extends FrameView {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 474, Short.MAX_VALUE)
+            .add(0, 904, Short.MAX_VALUE)
         );
 
         buttonGroup1.add(normals);
@@ -529,7 +532,7 @@ public class MaquinaVirtualView extends FrameView {
                             .add(143, 143, 143)
                             .add(jLabelSaida)
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(jTextFieldSaida, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
+                            .add(jTextFieldSaida, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE))
                         .add(org.jdesktop.layout.GroupLayout.LEADING, statusPanelLayout.createSequentialGroup()
                             .addContainerGap()
                             .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -551,41 +554,124 @@ public class MaquinaVirtualView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuOpenActionPerformed
-   
- 
+
     }//GEN-LAST:event_jMenuOpenActionPerformed
 
     private void jMenuOpenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuOpenMouseClicked
           
-  
-           String path = null; //para sabermos o caminho do arquvo
-           
-       
-          JFileChooser arquivo = new JFileChooser();
-          arquivo.setFileFilter(new FileNameExtensionFilter("txt","txt")); // filtro para o tipo de arquivo
-          arquivo.setAcceptAllFileFilterUsed(false); //tirar todas  ass extensoes 
-          arquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);  //somente files sao abertos 
-         
-  
+          /* Declaracoes de Strings etc.. */
+          String path = null; //para sabermos o caminho do arquvo
+          String str = null;  // valor da String
+          this.linha = 0; //Linha inicial
+          s = 0; // stack pointer em zero
+          M = new int[20000]; // Pilha
           
-          if(arquivo.showOpenDialog(arquivo) == JFileChooser.APPROVE_OPTION){ 
+          /* Declaracoes a Respeito do tipo de Arquivo */
+          
+          JFileChooser arquivo = new JFileChooser();
+          arquivo.setFileFilter(new FileNameExtensionFilter("*.obj","obj")); // filtro para o tipo de arquivo
+          //arquivo.setAcceptAllFileFilterUsed(false); //tirar todas  ass extensoes 
+          arquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);  //somente files sao abertos 
+          
+          /* String de expreção regular para fazer os filtros no arquivo lido */
+          String regex = "[ ]*([a-zA-Z0-9]*)[ ]*([a-zA-Z0-9]*)[ ]*([a-zA-Z0-9]*)[ ]*([a-zA-Z0-9]*).*";
+          Pattern pattern = Pattern.compile(regex);
+          Matcher matcher;
+          HashMap rotulos = new HashMap();
+          
+           /* Models das Tabelas */
+          
+          modelPrograma = (DefaultTableModel) normal.getModel();
+  
+          /* Codigo de Abertura do Arquivo e Verificacao das Expressoes Regulares */
+          
+          if(arquivo.showOpenDialog(arquivo) == JFileChooser.APPROVE_OPTION){
+           
             try {
-                String str = null;
+                
                 File arq = arquivo.getSelectedFile();
                 path = arq.toString();
                 in = new BufferedReader(new FileReader(path));
                 System.out.printf("Teste "+path);
+                
+             while (in.ready()) {
+                 
+                str = in.readLine();    // Leitura de uma linha de cada vez
+                matcher = pattern.matcher(str);
+                
+            if (matcher.find()) {   
+                /* Percorre os casamentos para achar o indice do comando */
+                for (int indice = 1; indice < matcher.groupCount(); indice++) {
+                    /* Verifica se o valor é um comando */
+                    if (isCommand(matcher.group(indice))) {
+                        /* Caso em que o commando é o segundo valor casado, consequentemente o primeiro valor é o rotulo */
+                        if(indice == 2){
+                            /* Insere chave = rotulo e valor = linha */
+                            rotulos.put(matcher.group(1), linha);
+                        }
+                        break;
+                    }
+                }
+            }
+                 
+                linha++;              
+           }
              
-                 str = in.readLine();    // Leitura de uma linha de cada vez
-                 System.out.printf("valor str "+str);
-                 modelPrograma = (DefaultTableModel) normal.getModel();
-                 modelPrograma.addRow(new Object[]{linha++,str,"teste2","teste3","foi"});
             } catch (IOException ex) {
                 Logger.getLogger(MaquinaVirtualView.class.getName()).log(Level.SEVERE, null, ex);
+              }
+            
+    try {
+        
+        in = new BufferedReader(new FileReader(path));
+        linha = 0;
+        while (in.ready()) {
+            str = in.readLine();    // Leitura de uma linha de cada vez
+            matcher = pattern.matcher(str);
+            if (matcher.find()) {   
+                /* Percorre os casamentos para achar o indice do comando */
+                for (int indice = 1; indice < matcher.groupCount(); indice++) {
+                    /* Verifica se o valor é um comando */
+                    if (isCommand(matcher.group(indice))) {
+                        switch (indice) {
+                            case 1: /* Caso em que o comando é o primero valor*/
+                                if(isCommandLabel(matcher.group(1)) && rotulos.containsKey(matcher.group(2))){
+                                    /* Adiciona na tabela a linha e seus respectivos valores */
+                                    System.out.printf("INDICE "+indice);
+                                  //  modelPrograma.addRow(new Object[]{linha++, matcher.group(1), rotulos.get(matcher.group(2)), matcher.group(3)});   
+                                }
+                                else{
+                                    System.out.printf(" INDICE ELSE " +indice);
+                                    /* Adiciona na tabela a linha e seus respectivos valores */
+                                     modelPrograma.addRow(new Object[]{linha++, matcher.group(1), matcher.group(2), matcher.group(3)});
+                                     
+                                }
+                                break;
+                            case 2: /* Caso em que o commando é o segundo valor casado, consequentemente o primeiro valor é o rotulo */
+                                if(isCommandLabel(matcher.group(1)) && rotulos.containsKey(matcher.group(3))){
+                                    /* Adiciona na tabela a linha e seus respectivos valores */
+                                    modelPrograma.addRow(new Object[]{linha++, matcher.group(2), rotulos.get(matcher.group(3)), matcher.group(4)});
+                                    System.out.printf("case"+indice);
+                                }
+                                else{
+                                    /* Adiciona na tabela a linha e seus respectivos valores */
+                                    System.out.printf("case"+indice);
+                                    modelPrograma.addRow(new Object[]{linha++, matcher.group(2), matcher.group(3), matcher.group(4)});
+                                }
+                                break;
+                                
+                        }
+                        break;
+                    }
+                }
             }
-                
-           
+        }
+        in.close();
+    } catch (IOException e) {
+        System.out.println("Erro ao ler o arquivo...");
+    }
           
+            
           }          
             
           else{   
@@ -596,18 +682,17 @@ public class MaquinaVirtualView extends FrameView {
     }//GEN-LAST:event_jMenuOpenMouseClicked
 
     private void jButtonExecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExecutarActionPerformed
-           if(!(normals.isSelected() || passoapasso.isSelected())){
-                JOptionPane.showMessageDialog(null, "Escolha um Modo de Execução Normal/Passo A Passo", "Input Error", JOptionPane.ERROR_MESSAGE);
-        return;
+        if(!(normals.isSelected() || passoapasso.isSelected())){
+            JOptionPane.showMessageDialog(null, "Escolha um Modo de Execução Normal/Passo A Passo", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-           if(normals.isSelected()){
-           System.out.println("Preciso colocar o txt la dentro");
-           }
-                else if(passoapasso.isSelected()){
-                System.out.println("Passo a Passo");
-           
-                }
-    }//GEN-LAST:event_jButtonExecutarActionPerformed
+        if(normals.isSelected()){
+            System.out.println("Preciso colocar o txt la dentro");
+        } else if(passoapasso.isSelected()){
+            System.out.println("Passo a Passo");
+            
+        }
+}//GEN-LAST:event_jButtonExecutarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -638,6 +723,7 @@ public class MaquinaVirtualView extends FrameView {
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
+    private javax.swing.JSeparator statusPanelSeparator;
     // End of variables declaration//GEN-END:variables
     
     private final Timer messageTimer;
@@ -645,8 +731,43 @@ public class MaquinaVirtualView extends FrameView {
     private final Icon idleIcon;
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
-
     private JDialog aboutBox;
     
-    
+     private boolean isCommand(String group) {
+        String commands[] = {"LDC", "LDV", "ADD", "SUB", "MULT", "DIVI",
+        "INV", "AND", "OR", "NEG", "CME", "CMA", "CEQ", "CDIF", "CMEQ", "CMAQ",
+        "START", "HLT", "STR", "JMP", "JMPF", "NULL", "RD", "PRN", "ALLOC", "DALLOC",
+        "CALL", "RETURN"};
+        boolean flag = false;
+
+        for (int i = 0; i < commands.length; i++) {
+            if (commands[i].equals(group)) {
+                flag = true;
+            }
+        }
+
+        if (flag) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    private boolean isCommandLabel(String group) {
+        String commands[] = {"JMP", "JMPF", "CALL", "RETURN"};
+        boolean flag = false;
+
+        for (int i = 0; i < commands.length; i++) {
+            if (commands[i].equals(group)) {
+                flag = true;
+            }
+        }
+
+        if (flag) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
