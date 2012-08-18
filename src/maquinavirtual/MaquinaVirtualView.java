@@ -41,7 +41,7 @@ public class MaquinaVirtualView extends FrameView {
     public DefaultTableModel modelSaida = new DefaultTableModel();
     public DefaultTableModel modelMemoria = new DefaultTableModel();
     private int op;
-    public  int linha; // linha do codigo
+    public  int linha=0,linhap=0; // linha do codigo
     public BufferedReader in = null; //usado para abrir arquivo .obj
     public int s = 0; // stack pointer
     public int [] M = new int[20000];
@@ -137,10 +137,6 @@ public class MaquinaVirtualView extends FrameView {
 
         mainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabelPilha = new javax.swing.JLabel();
-        jLabelNormal = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        pilha = new javax.swing.JTable();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuOpen = new javax.swing.JMenu();
@@ -148,7 +144,7 @@ public class MaquinaVirtualView extends FrameView {
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
-        statusPanelSeparator = new javax.swing.JSeparator();
+        javax.swing.JSeparator statusPanelSeparator = new javax.swing.JSeparator();
         statusMessageLabel = new javax.swing.JLabel();
         statusAnimationLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
@@ -157,13 +153,17 @@ public class MaquinaVirtualView extends FrameView {
         jTextFieldEntrada = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         normal = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
+        jLabelNormal = new javax.swing.JLabel();
         normals = new javax.swing.JRadioButton();
         passoapasso = new javax.swing.JRadioButton();
         jButtonExecutar = new javax.swing.JButton();
         jButtonParar = new javax.swing.JButton();
-        jLabelSaida = new javax.swing.JLabel();
         jTextFieldSaida = new javax.swing.JTextField();
+        jLabelSaida = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        pilha = new javax.swing.JTable();
+        jLabelPilha = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         buttonGroup3 = new javax.swing.ButtonGroup();
@@ -184,164 +184,26 @@ public class MaquinaVirtualView extends FrameView {
             .add(0, 227, Short.MAX_VALUE)
         );
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(maquinavirtual.MaquinaVirtualApp.class).getContext().getResourceMap(MaquinaVirtualView.class);
-        jLabelPilha.setText(resourceMap.getString("jLabelPilha.text")); // NOI18N
-        jLabelPilha.setName("jLabelPilha"); // NOI18N
-
-        jLabelNormal.setText(resourceMap.getString("jLabelNormal.text")); // NOI18N
-        jLabelNormal.setName("jLabelNormal"); // NOI18N
-
-        jScrollPane2.setName("jScrollPane2"); // NOI18N
-
-        pilha.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        pilha.setName("pilha"); // NOI18N
-        jScrollPane2.setViewportView(pilha);
-        pilha.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("pilha.columnModel.title0")); // NOI18N
-        pilha.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("pilha.columnModel.title1")); // NOI18N
-        pilha.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("pilha.columnModel.title2")); // NOI18N
-        pilha.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("pilha.columnModel.title3")); // NOI18N
-
         org.jdesktop.layout.GroupLayout mainPanelLayout = new org.jdesktop.layout.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(jLabelNormal)
-                .add(448, 448, 448)
-                .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(mainPanelLayout.createSequentialGroup()
-                        .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(447, 447, 447)
-                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jLabelPilha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(1055, Short.MAX_VALUE))
+                .add(1430, 1430, 1430)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(2688, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(mainPanelLayout.createSequentialGroup()
-                .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(mainPanelLayout.createSequentialGroup()
-                        .add(183, 183, 183)
-                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(mainPanelLayout.createSequentialGroup()
-                        .add(12, 12, 12)
-                        .add(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jLabelNormal)
-                            .add(jLabelPilha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(18, 18, 18)
-                        .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 563, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .add(9, 9, 9))
+                .add(183, 183, 183)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(199, 199, 199))
         );
 
         menuBar.setName("menuBar"); // NOI18N
 
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(maquinavirtual.MaquinaVirtualApp.class).getContext().getResourceMap(MaquinaVirtualView.class);
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
@@ -411,43 +273,8 @@ public class MaquinaVirtualView extends FrameView {
         normal.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("normal.columnModel.title2")); // NOI18N
         normal.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("normal.columnModel.title3")); // NOI18N
 
-        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
-                .add(12, 12, 12)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabelEntrada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 238, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTextFieldEntrada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 300, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
-                .add(600, 600, 600)
-                .add(jLabelEntrada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(jTextFieldEntrada, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE))
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 572, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jPanel3.setName("jPanel3"); // NOI18N
-
-        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 506, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 904, Short.MAX_VALUE)
-        );
+        jLabelNormal.setText(resourceMap.getString("jLabelNormal.text")); // NOI18N
+        jLabelNormal.setName("jLabelNormal"); // NOI18N
 
         buttonGroup1.add(normals);
         normals.setText(resourceMap.getString("normals.text")); // NOI18N
@@ -469,11 +296,107 @@ public class MaquinaVirtualView extends FrameView {
         jButtonParar.setText(resourceMap.getString("jButtonParar.text")); // NOI18N
         jButtonParar.setName("jButtonParar"); // NOI18N
 
+        jTextFieldSaida.setText(resourceMap.getString("jTextFieldSaida.text")); // NOI18N
+        jTextFieldSaida.setName("jTextFieldSaida"); // NOI18N
+
         jLabelSaida.setText(resourceMap.getString("jLabelSaida.text")); // NOI18N
         jLabelSaida.setName("jLabelSaida"); // NOI18N
 
-        jTextFieldSaida.setText(resourceMap.getString("jTextFieldSaida.text")); // NOI18N
-        jTextFieldSaida.setName("jTextFieldSaida"); // NOI18N
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+
+        pilha.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        pilha.setName("pilha"); // NOI18N
+        jScrollPane2.setViewportView(pilha);
+        pilha.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("pilha.columnModel.title0")); // NOI18N
+        pilha.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("pilha.columnModel.title1")); // NOI18N
+        pilha.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("pilha.columnModel.title2")); // NOI18N
+        pilha.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("pilha.columnModel.title3")); // NOI18N
+
+        jLabelPilha.setText(resourceMap.getString("jLabelPilha.text")); // NOI18N
+        jLabelPilha.setName("jLabelPilha"); // NOI18N
+
+        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabelNormal))
+                .add(45, 45, 45)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelPilha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 356, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(jLabelSaida)
+                                .add(org.jdesktop.layout.GroupLayout.TRAILING, jTextFieldSaida, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 300, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(jLabelEntrada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 238, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(jTextFieldEntrada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 300, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(jPanel2Layout.createSequentialGroup()
+                                    .add(normals)
+                                    .add(41, 41, 41)
+                                    .add(passoapasso)))
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
+                                .add(jButtonExecutar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 109, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(18, 18, 18)
+                                .add(jButtonParar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 97, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(410, Short.MAX_VALUE)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabelNormal)
+                    .add(jLabelPilha, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .add(jLabelEntrada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(jTextFieldEntrada, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 82, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(59, 59, 59)
+                        .add(jLabelSaida)
+                        .add(18, 18, 18)
+                        .add(jTextFieldSaida, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 74, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(normals)
+                            .add(passoapasso))
+                        .add(26, 26, 26)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jButtonExecutar)
+                            .add(jButtonParar)))
+                    .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                        .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane2)
+                        .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        jPanel3.setName("jPanel3"); // NOI18N
+
+        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 506, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 1103, Short.MAX_VALUE)
+        );
 
         org.jdesktop.layout.GroupLayout statusPanelLayout = new org.jdesktop.layout.GroupLayout(statusPanel);
         statusPanel.setLayout(statusPanelLayout);
@@ -484,29 +407,12 @@ public class MaquinaVirtualView extends FrameView {
                     .add(statusPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .add(statusMessageLabel))
-                    .add(statusPanelLayout.createSequentialGroup()
-                        .add(40, 40, 40)
-                        .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(147, 147, 147)
-                        .add(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jTextFieldSaida, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 289, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jLabelSaida))))
-                .add(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(statusPanelLayout.createSequentialGroup()
-                        .add(29, 29, 29)
-                        .add(normals)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(passoapasso))
-                    .add(statusPanelLayout.createSequentialGroup()
-                        .add(20, 20, 20)
-                        .add(jButtonExecutar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 109, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jButtonParar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 92, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                    .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(1453, 1453, 1453)
                 .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(418, 418, 418)
+                .add(364, 364, 364)
                 .add(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                    .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 855, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, statusPanelLayout.createSequentialGroup()
                         .add(127, 127, 127)
                         .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -517,35 +423,19 @@ public class MaquinaVirtualView extends FrameView {
         statusPanelLayout.setVerticalGroup(
             statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, statusPanelLayout.createSequentialGroup()
-                .add(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, statusPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, statusPanelLayout.createSequentialGroup()
-                            .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(31, 31, 31)
-                            .add(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                                .add(statusMessageLabel)
-                                .add(statusAnimationLabel)
-                                .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(143, 143, 143)
-                            .add(jLabelSaida)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(jTextFieldSaida, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE))
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, statusPanelLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .add(statusPanelLayout.createSequentialGroup()
-                        .add(232, 232, 232)
-                        .add(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(normals)
-                            .add(passoapasso))
-                        .add(18, 18, 18)
-                        .add(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jButtonExecutar)
-                            .add(jButtonParar))))
-                .add(71, 71, 71))
+                .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(31, 31, 31)
+                .add(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(statusMessageLabel)
+                    .add(statusAnimationLabel)
+                    .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(18, 18, 18)
+                .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(125, 125, 125))
+            .add(statusPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(108, 108, 108))
         );
 
         setComponent(mainPanel);
@@ -582,6 +472,7 @@ public class MaquinaVirtualView extends FrameView {
            /* Models das Tabelas */
           
           modelPrograma = (DefaultTableModel) normal.getModel();
+          
   
           /* Codigo de Abertura do Arquivo e Verificacao das Expressoes Regulares */
           
@@ -686,12 +577,28 @@ public class MaquinaVirtualView extends FrameView {
             JOptionPane.showMessageDialog(null, "Escolha um Modo de Execução Normal/Passo A Passo", "Input Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if(normals.isSelected()){
-            System.out.println("Preciso colocar o txt la dentro");
-        } else if(passoapasso.isSelected()){
+        if(normals.isSelected()){ //Em caso do botao executar seja selecionado
+           /*Model tabela de pilha */
+           modelMemoria = (DefaultTableModel) pilha.getModel();
+           
+           while (linhap <= normal.getRowCount())
+           {
+           String instrucao = (String) modelPrograma.getValueAt(linhap, 1);
+        
+                /*Iniciar o programa principal*/
+                if(instrucao.equals("START")){
+                s = -1;
+                System.out.println("Start");
+                }
+                    
+          linhap++;
+           }        
+            
+        }   
+            else if(passoapasso.isSelected()){
             System.out.println("Passo a Passo");
             
-        }
+             }
 }//GEN-LAST:event_jButtonExecutarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -723,7 +630,6 @@ public class MaquinaVirtualView extends FrameView {
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
-    private javax.swing.JSeparator statusPanelSeparator;
     // End of variables declaration//GEN-END:variables
     
     private final Timer messageTimer;
@@ -770,4 +676,6 @@ public class MaquinaVirtualView extends FrameView {
             return false;
         }
     }
+    
+    
 }
